@@ -1,0 +1,19 @@
+const express = require('express');
+const router = express.Router();
+
+//queries
+
+router.get('/', (req, res) => {
+  const {limit, offset} = req.query;
+
+  if(limit && offset){ //si se enviaron los parametros
+    res.json({
+      limit,
+      offset,
+    });
+  } else {
+    res.send('No hay parametros.')
+  }
+});
+
+module.exports = router;
