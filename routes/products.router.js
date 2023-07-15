@@ -43,7 +43,7 @@ router.get('/:id', (req,res) => {
 });
 
 
-//POST para crear usuario
+//POST para crear producto
 
 router.post('/', (req, res) => {
   const body = req.body;
@@ -52,4 +52,29 @@ router.post('/', (req, res) => {
     data:body //se retorna la respuesta.-
   });
 });
+
+
+//PATCH para actualizar producto
+
+router.patch('/:id', (req, res) => {
+  const { id } = req.params; //Se solicita la ID
+  const body = req.body;
+  res.json({
+    message: 'update',
+    id,
+    data:body, //se retorna la respuesta.-
+  });
+});
+
+//delete
+
+router.delete('/:id', (req, res) => {
+  const { id } = req.params; //Se solicita la ID
+  res.json({
+    message: 'deleted',
+    id,
+  });
+});
+
+
 module.exports = router;
