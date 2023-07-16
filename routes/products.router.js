@@ -1,7 +1,8 @@
 const express = require('express');
-const {faker} = require('@faker-js/faker');
-//const faker = require('faker');
+const ProductsService = require('./../services/product.service');
+
 const router = express.Router();
+const service = new ProductsService();
 
 
 //Endpoint específico
@@ -11,23 +12,7 @@ router.get('/filter', (req,res) => {
 
 //endpoint productos (dinamico)
 router.get('/', (req, res) => {
-
-  const products = [];
-  const {size} = req.query;
-
-  //tamaño para generar productos.
-  const limit = size || 10;
-
-  //Se crean productos con faker
-  for (let i = 0 ; i < limit ; i++){
-    products.push({
-      name: faker.commerce.productName(),
-      price: parseInt(faker.commerce.price(), 10),
-      image: faker.image.url(),
-    }
-    )
-  }
-  //Es comun enviar un JSON para el front.
+  const products = service.find();
   res.json(products);
 });
 
@@ -35,11 +20,9 @@ router.get('/', (req, res) => {
 //producto id, se pone : porque es un parametro
 router.get('/:id', (req,res) => {
   const {id} = req.params;
-  res.json({
-    id,
-    nane: 'Product 2',
-    price: 3500,
-  });
+  const product = service.findOne(id);
+  res.json(product);
+
 });
 
 
@@ -47,7 +30,7 @@ router.get('/:id', (req,res) => {
 
 router.post('/', (req, res) => {
   const body = req.body;
-  res.json({
+  res.status(201).res.json({
     message: 'create',
     data:body //se retorna la respuesta.-
   });
@@ -67,7 +50,6 @@ router.patch('/:id', (req, res) => {
 });
 
 //delete
-
 router.delete('/:id', (req, res) => {
   const { id } = req.params; //Se solicita la ID
   res.json({
